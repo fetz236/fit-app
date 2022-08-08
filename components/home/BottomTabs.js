@@ -8,7 +8,7 @@ export default function BottomTabs() {
     return (
             <View style={bottom_tabs_css.bt_container}>
             {items.map((item,index) =>(
-                <TouchableOpacity>
+                <TouchableOpacity key={index}>
                     <View key={index} style={bottom_tabs_css.item_container}>
                     <Icon name={item.image} 
                     style={bottom_tabs_css.image_def}/>

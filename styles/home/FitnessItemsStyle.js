@@ -23,7 +23,7 @@ export const fi_items_css = StyleSheet.create({
     },
     icon_container:{
         position: "absolute",
-        right: 20,
+        right: 15,
         marginTop:20
     },
     gym_info_container:{
@@ -33,12 +33,14 @@ export const fi_items_css = StyleSheet.create({
         marginTop: 5,
     },
     headline_1:{
-        fontSize: 14, 
+        fontSize: 14,
+        marginLeft:10,
         fontWeight:"600",
         color:'#800020',
     },
     headline_2:{
         fontSize: 12, 
+        marginLeft:10,
         fontWeight:"600", 
         color:'#800020',
     },
@@ -51,6 +53,7 @@ export const fi_items_css = StyleSheet.create({
         alignItems:"center",
         justifyContent: 'center',
         borderRadius: 15,
+        marginRight:15,
     },
 });
 

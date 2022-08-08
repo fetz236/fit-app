@@ -5,11 +5,12 @@ export const course_sheet = StyleSheet.create({
     course_item: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop:10,
         marginLeft:20,
+        backgroundColor: "white",
     },
     course_title:{
         fontSize:19,
+        color:'#800020',
         fontWeight:'600',    
     },
     course_image:{
@@ -19,6 +20,9 @@ export const course_sheet = StyleSheet.create({
         marginRight:20, 
         marginBottom:5
     },
+    course_text:{
+        color:'#8d8d8d',
+    }
 });
 
 

@@ -3,6 +3,7 @@ import { View, Text, Image, ScrollView } from 'react-native'
 import { categories_css } from '../../styles/home/CategoriesStyle';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { TouchableOpacity } from 'react-native';
 
 const items = [
     {
@@ -36,11 +37,13 @@ export default function Categories() {
         <View style={categories_css.categories_container}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {items.map((item,index) =>(
-                    <View key={index} style={categories_css.item_container}>
-                    <MaterialCommunityIcons name={item.image} 
-                    style={categories_css.image_def}/>
-                    <Text style={categories_css.text_def}>{item.text}</Text>
-                </View>  
+                    <TouchableOpacity key={index}>
+                        <View key={index} style={categories_css.item_container}>
+                            <MaterialCommunityIcons name={item.image} 
+                            style={categories_css.image_def}/>
+                            <Text style={categories_css.text_def}>{item.text}</Text>
+                        </View>  
+                    </TouchableOpacity>
                 ))}           
             </ScrollView>
         </View>

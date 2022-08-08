@@ -13,8 +13,14 @@ const course_details = [
         image : require('../../assets/images/store_images/karate_1.jpeg'),
     },
     {
-        name: "Sheeeeshh Class",
-        description: "Free Sheeeeshh Class",
+        name: "Spinning Class",
+        description: "Group Fitness class",
+        price: "12.20",
+        image : require('../../assets/images/store_images/karate_1.jpeg'),
+    },
+    {
+        name: "Siuuu Class",
+        description: "Free Siuuu Class",
         price: "12.20",
         image : require('../../assets/images/store_images/karate_1.jpeg'),
     },
@@ -36,7 +42,7 @@ export default function CourseItems({navigation, ...props}) {
     });
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView style={{backgroundColor: 'white'}} showsVerticalScrollIndicator={false}>
         {course_details.map((course, index) => (
             <TouchableOpacity activeOpacity={1} style={{
                 }}
@@ -67,8 +73,8 @@ export default function CourseItems({navigation, ...props}) {
 const CourseInfo = (props) => (
     <View style={{width:240, justifyContent:"space-evenly"}}>
         <Text style={course_sheet.course_title}>{props.course_details.name}</Text>
-        <Text>{props.course_details.description}</Text>
-        <Text>${props.course_details.price}</Text>
+        <Text style={course_sheet.course_text}>{props.course_details.description}</Text>
+        <Text style={course_sheet.course_text}>${props.course_details.price}</Text>
 
     </View>
 )

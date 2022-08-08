@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { fi_items_css } from '../../styles/home/FitnessItemsStyle';
@@ -55,7 +55,12 @@ const fitness = [
 ];
 
 export default function FitnessItems({navigation, ...props}) {
-    
+    const [heart_state, setHeartState] = useState(false);
+
+    const addFavourites = () => {
+        setHeartState(!heart_state);
+    };
+
     return (
         <>
             {fitness.map((fit, index) => (
@@ -73,11 +78,10 @@ export default function FitnessItems({navigation, ...props}) {
                 )}
                 >
                 <View key={index}>
-                    
-                            <View style={fi_items_css.main_container}>
-                                <GymImage image={fit.image}/>
-                                <GymInfo name={fit.name} rating={fit.rating}/>
-                            </View> 
+                    <View style={fi_items_css.main_container}>
+                        <GymImage image={fit.image} heart_state={heart_state} addFavourites={addFavourites}/>
+                        <GymInfo name={fit.name} rating={fit.rating}/>
+                    </View> 
                 </View>
             </TouchableOpacity>
 
@@ -92,8 +96,9 @@ const GymImage = (props) => (
             <>
             <Image source={props.image} 
             style={fi_items_css.image_def}/>
-            <TouchableOpacity style={fi_items_css.icon_container}>
-                <MaterialCommunityIcons name='heart-outline' size={25} color='white'></MaterialCommunityIcons>
+            <TouchableOpacity style={fi_items_css.icon_container} onPress={() => props.addFavourites()}>
+                <MaterialCommunityIcons name={props.heart_state?'heart-outline':'heart'} 
+                size={25} color='white'></MaterialCommunityIcons>
             </TouchableOpacity>
             </>
         </View>  
