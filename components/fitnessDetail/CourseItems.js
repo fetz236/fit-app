@@ -42,7 +42,7 @@ export default function CourseItems({navigation, ...props}) {
     });
 
     return (
-        <ScrollView style={{backgroundColor: 'white'}} showsVerticalScrollIndicator={false}>
+        <View style={{backgroundColor: 'white'}} showsVerticalScrollIndicator={false}>
         {course_details.map((course, index) => (
             <TouchableOpacity activeOpacity={1} style={{
                 }}
@@ -66,7 +66,7 @@ export default function CourseItems({navigation, ...props}) {
                 </View>
             </TouchableOpacity>
         ))}
-        </ScrollView>
+        </View>
     )
 }
 

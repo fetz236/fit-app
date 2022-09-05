@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { header_tabs_css } from '../../styles/home/HeaderTabsStyle';
 
 
-export default function HeaderTabs({navigation}) {
+export default function HeaderTabs({navigation}, props) {
     const [activeTab, setActiveTab] = useState("Gyms");
     return (
         <View style={{flexDirection: "row" , alignSelf: "center" }}>
@@ -41,7 +41,6 @@ const HeaderButton = (props) => (
         onPress={() => 
             {
                 props.navigation.navigate(props.page);
-                props.setActiveTab(props.text);
             }
         }
         >

@@ -8,7 +8,7 @@ export const fitness_schedule = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         position: "absolute",
-        marginTop: 775,
+        marginTop: 720,
         zIndex: 999,
     },
     button_main:{

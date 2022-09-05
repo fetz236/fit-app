@@ -10,16 +10,14 @@ export const fi_items_css = StyleSheet.create({
         marginTop:5,
         backgroundColor: "white",
         paddingVertical: 10,
-        paddingLeft: 15,
     },
     image_def:{
-        width:500,
-        height:200,
-        resizeMode: "contain",
+        width:'100%',
+        height:180,
     },
     image_container:{
         alignItems:'center', 
-        marginRight:20
+        marginRight:20,
     },
     icon_container:{
         position: "absolute",

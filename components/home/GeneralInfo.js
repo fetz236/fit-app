@@ -4,19 +4,33 @@ import { Image } from 'react-native';
 import { View, Text } from 'react-native'
 import { general_info_css } from '../../styles/home/GeneralInfoStyle';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-
+import {auth} from '../../firebase'
+import { onAuthStateChanged } from "firebase/auth";
 
 const account_icon = {image : require('../../assets/icons/bottom_icons/account_icon.jpg')};
 const logo = {image : require('../../assets/images/general_images/fit.png')};
 
 export default function GeneralInfo({ navigation, ...props }) {
+
+    const checkAuthentication = () => {
+        
+        if (auth.currentUser) {
+            navigation.navigate("UserDetail", {
+                navigation:navigation,
+            })
+        } else {
+            navigation.navigate("AuthenticationScreen", {
+                navigation:navigation,
+            })
+        }
+        
+    };
     return (
         <View source={general_info_css.gi_container}>
             <Logo/>
             <View style={general_info_css.profile_container}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("UserDetail")}>
+                    onPress={() => checkAuthentication()}>
                         
 
                     <Icon name="person-outline" size={35} color='#800020'></Icon>

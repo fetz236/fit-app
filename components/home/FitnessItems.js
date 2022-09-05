@@ -2,10 +2,17 @@ import React, {useState} from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { fi_items_css } from '../../styles/home/FitnessItemsStyle';
+import { SliderBox } from "react-native-image-slider-box";
 
 const fitness = [
     {
-        image : require('../../assets/images/store_images/dance_1.jpeg'),
+        image : [
+            require('../../assets/images/store_images/dance_1.jpeg'),
+            require('../../assets/images/store_images/dance_1.jpeg'),
+            require('../../assets/images/store_images/dance_1.jpeg'),
+            require('../../assets/images/store_images/dance_1.jpeg'),
+            require('../../assets/images/store_images/dance_1.jpeg'),
+        ],
         categories: ["Dance"],
         name: "Dance 1",
         price: 7,
@@ -13,7 +20,12 @@ const fitness = [
         rating: 4.5,
     },
     {
-        image : require('../../assets/images/store_images/weights_1.jpeg'),
+        image : [
+            require('../../assets/images/store_images/weights_1.jpeg'),
+            require('../../assets/images/store_images/weights_1.jpeg'),
+            require('../../assets/images/store_images/weights_1.jpeg'),
+            require('../../assets/images/store_images/weights_1.jpeg'),
+        ],
         categories: ["Weights"],
         name: "Weights 1",
         price: 7,
@@ -21,7 +33,12 @@ const fitness = [
         rating: 4.5,
     },
     {
-        image : require('../../assets/images/store_images/ballet_1.jpeg'),
+        image : [
+            require('../../assets/images/store_images/ballet_1.jpeg'),
+            require('../../assets/images/store_images/ballet_1.jpeg'),
+            require('../../assets/images/store_images/ballet_1.jpeg'),
+            require('../../assets/images/store_images/ballet_1.jpeg'),
+        ],
         categories: ["Ballet", "Dance"],
         name: "Ballet 1",
         price: 7,
@@ -29,7 +46,13 @@ const fitness = [
         rating: 4.4,
     },
     {
-        image : require('../../assets/images/store_images/yoga_1.jpeg'),
+        image : [
+            require('../../assets/images/store_images/yoga_1.jpeg'),
+            require('../../assets/images/store_images/yoga_1.jpeg'),
+            require('../../assets/images/store_images/yoga_1.jpeg'),
+            require('../../assets/images/store_images/yoga_1.jpeg'),
+
+        ],
         categories: ["Yoga"],
         name: "Yoga 1",
         price: 7,
@@ -37,7 +60,12 @@ const fitness = [
         rating: 4.3,
     },
     {
-        image : require('../../assets/images/store_images/cycling_1.jpeg'),
+        image : [
+            require('../../assets/images/store_images/cycling_1.jpeg'),
+            require('../../assets/images/store_images/cycling_1.jpeg'),
+            require('../../assets/images/store_images/cycling_1.jpeg'),
+            require('../../assets/images/store_images/cycling_1.jpeg'),
+        ],
         categories: ["Cycling"],
         name: "Cycling 1",
         price: 7,
@@ -45,7 +73,12 @@ const fitness = [
         rating: 4.2,
     },
     {
-        image : require('../../assets/images/store_images/karate_1.jpeg'),
+        image : [
+            require('../../assets/images/store_images/karate_1.jpeg'),
+            require('../../assets/images/store_images/karate_1.jpeg'),
+            require('../../assets/images/store_images/karate_1.jpeg'),
+            require('../../assets/images/store_images/karate_1.jpeg'),
+        ],
         categories: ["Karate"],
         name: "Karate 1",
         price: 7,
@@ -55,7 +88,7 @@ const fitness = [
 ];
 
 export default function FitnessItems({navigation, ...props}) {
-    const [heart_state, setHeartState] = useState(false);
+    const [heart_state, setHeartState] = useState(true);
 
     const addFavourites = () => {
         setHeartState(!heart_state);
@@ -92,16 +125,11 @@ export default function FitnessItems({navigation, ...props}) {
 
 const GymImage = (props) => (
     <View style={fi_items_css.gym_image_container}>
-            <View style={fi_items_css.image_container}>
-            <>
-            <Image source={props.image} 
-            style={fi_items_css.image_def}/>
-            <TouchableOpacity style={fi_items_css.icon_container} onPress={() => props.addFavourites()}>
-                <MaterialCommunityIcons name={props.heart_state?'heart-outline':'heart'} 
-                size={25} color='white'></MaterialCommunityIcons>
-            </TouchableOpacity>
-            </>
-        </View>  
+        <Image source={props.image[0]} style={fi_items_css.image_def}/>
+        <TouchableOpacity style={fi_items_css.icon_container} onPress={() => props.addFavourites()}>
+            <MaterialCommunityIcons name={props.heart_state?'heart-outline':'heart'} 
+            size={25} color='white'></MaterialCommunityIcons>
+        </TouchableOpacity>
     </View>
 )
 

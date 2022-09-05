@@ -1,14 +1,28 @@
-import firebase from "firebase"
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyC8UgJ1qhhhMb-EK-qDcxnEo7bYQrg1BTI",
-    authDomain: "fitless-338818.firebaseapp.com",
-    projectId: "fitless-338818",
-    storageBucket: "fitless-338818.appspot.com",
-    messagingSenderId: "271365522856",
-    appId: "1:271365522856:web:fa3ba42e3690b6da62499d"
-  };
+  apiKey: "AIzaSyDu52Y9UalTjclhBRPZRPm4EUwb5ckpXCQ",
+  authDomain: "fit-user-app.firebaseapp.com",
+  projectId: "fit-user-app",
+  storageBucket: "fit-user-app",
+  messagingSenderId: "388449048733",
+  appId: "1:388449048733:web:e5c3b6726ce592420a5c74",
+  measurementId: "G-48KT9Y0VYF"
+};
 
-  !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+let app;
 
-  export default firebase;
+if (firebase.apps.length === 0) {
+  app = firebase.initializeApp(firebaseConfig)
+} else {
+  app = firebase.app();
+}
+
+const db = app.firestore();
+const auth = firebase.auth();
+const storage = getStorage(app);
+
+export { db, auth, storage };

@@ -8,7 +8,7 @@ export const about_sheet = StyleSheet.create({
         backgroundColor: "white"
     },
     about_img:{
-        width:"100%",
+        width:"92%",
         height:180,  
         marginTop:30,
     },
@@ -20,7 +20,7 @@ export const about_sheet = StyleSheet.create({
         marginHorizontal:15,
     },
     about_desc:{
-        color:'#800020',
+        color:'#8d8d8d',
         fontSize:15.5,
         fontWeight:"400",
         marginTop:10,

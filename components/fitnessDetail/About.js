@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, Image } from 'react-native'
 import { about_sheet } from '../../styles/fitnessDetail/AboutStyle';
+import { SliderBox } from "react-native-image-slider-box";
 
 
 
@@ -32,7 +33,7 @@ export default function About(props) {
 }
 
 const FitnessImage = (props) =>(
-    <Image source={props.image} style={about_sheet.about_img}/>
+    <SliderBox images={props.image} style={about_sheet.about_img}/>
 )
 
 const FitnessTitle = (props)=>(

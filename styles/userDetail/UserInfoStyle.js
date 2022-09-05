@@ -2,99 +2,67 @@ import { StyleSheet } from 'react-native'
 
 
 export const user_css = StyleSheet.create({
+    main_container: {
+        marginBottom:'10%',
+    },
     user_header: {
         fontWeight: "bold",
         marginTop:"5%",
         fontSize: 20,
-        marginBottom:"2%",
+        color:'#800020',
     },
-    trainer_sub_header: {
-        fontWeight: "600",
+    user_sub_heading: {
+        fontWeight: "400",
         fontSize: 16,
+        color:'#8d8d8d',
         marginLeft:"2%",
         marginTop:"2%",
-    },
-    trainer_body: {
-        fontWeight:"200",
-        marginTop:"2%",
-        marginLeft:"2%",
-        fontSize:16
+        marginBottom: "2%",
     },
     name_container: {
         alignItems: 'center',
     },
-    text_view: {
-        marginLeft:"auto",
-        marginRight:"auto",
-        width: 350,
-        height: 150,
-        borderColor: '#aaaaaa',
-        borderWidth: 2,
-        borderRadius: 9,
+    review_container:{
+        alignItems:'center',
+        justifyContent:'center',
     },
-    rating_body: {
-        fontWeight:"200",
-        marginTop:"8%", 
-        marginLeft:"2%",
-        fontSize:16
-    },
-    text_sub_view: {
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        marginLeft:"2%",
-        alignItems: 'flex-start' // if you want to fill rows left to right
-    },
-    sub_view_item: {
-        marginTop:"2%",
-        width: '50%' // is 50% of container width
-    },
-    divider: {
-        marginTop:"4%",
-        borderBottomWidth:5,
-    },
-
     user_image: {
         width: 150,
         height: 150,
         borderRadius: 150 / 2,
+        borderWidth: 3,
+        borderColor: '#800020',
         overflow: "hidden",
         alignSelf: "center",       
         marginTop: "20%", 
     },
-    
-    trainer_rating:{
+    user_rating:{
         alignContent:'space-around',
         justifyContent:'center',
         flexDirection:'row',
-    }
-});
-
-export const trainer_schedule = StyleSheet.create({
-    schedule_container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        zIndex: 999,
-        marginBottom: "10%",
     },
-    schedule_button_style: {
+    diplay_settings:{
+        marginLeft:'2%',
+        marginRight:'2%',
+        marginTop:'2%',
+        marginBottom:'2%',
+        borderBottomWidth:2,
+        borderColor:'#8d8d8d',
         flexDirection:'row',
-        justifyContent: 'center',
-        width: "100%",
     },
-    touchable_opacity: {
-        marginTop: 20,
-        backgroundColor: "#800020",
-        alignItems: 'center',
-        padding: 14,
-        borderRadius: 30,
-        width: 350,
-        position: "relative",
+    display_settings_text:{
+        color:'#8d8d8d',
+        fontSize:24,
+        fontWeight:'600',
+        
     },
-    button_text: {
-        color: "white",
-        fontSize: 17,
+    arrow:{
+        marginLeft:'auto',
+        color:'#8d8d8d',
+        fontSize:24,
+        fontWeight:'600',      
+    },
+    logout_button:{
+        color:'red',
     },
 });
