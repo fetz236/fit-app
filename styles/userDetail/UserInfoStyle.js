@@ -65,4 +65,22 @@ export const user_css = StyleSheet.create({
     logout_button:{
         color:'red',
     },
+    checkmark:{
+        alignSelf:'center',
+        alignItems:'center',
+        marginTop:'5%',
+        borderWidth:2,
+        borderRadius:60,
+        borderColor:'#800020',
+        backgroundColor:'#800020',
+    },
+    check_box:{
+        marginLeft:'2%',
+        marginRight:'2%',
+        marginTop:'2%',
+        marginBottom:'2%',
+        alignItems:'center',
+        justifyContent:'center',
+
+    },
 });

@@ -50,7 +50,7 @@ export default function CategorySearch() {
                     if (index %3 ==0 && index+1 < fake_data.length){
                         index += 1;
                         return (
-                            <View style={{flexDirection:'row' , marginTop:'3%' , marginBottom:'3%', marginLeft: '3%', marginRight:'3%'}}>
+                            <View key={index} style={{flexDirection:'row' , marginTop:'3%' , marginBottom:'3%', marginLeft: '3%', marginRight:'3%'}}>
                                 <TouchableOpacity
                                     onPress={() => console.log("ok")}
                                     style= {{marginRight:'3%'}}
@@ -78,7 +78,7 @@ export default function CategorySearch() {
                     
                     else if (index%3 ==2){
                         return (
-                            <View style={{flexDirection:'row' , marginLeft: '3%', marginRight:'3%'}}>
+                            <View key={index} style={{flexDirection:'row' , marginLeft: '3%', marginRight:'3%'}}>
                                 <TouchableOpacity
                                     onPress={() => console.log("ok")}
                                 >
@@ -94,7 +94,7 @@ export default function CategorySearch() {
                     }
                     else if (index %3 ==0 && index+1 >= fake_data.length){
                         return (
-                            <View style={{flexDirection:'row' , marginTop:'3%' , marginBottom:'3%',marginLeft: '3%', marginRight:'3%'}}>
+                            <View key={index} style={{flexDirection:'row' , marginTop:'3%' , marginBottom:'3%',marginLeft: '3%', marginRight:'3%'}}>
 
                                 <TouchableOpacity
                                     onPress={() => console.log("ok")}

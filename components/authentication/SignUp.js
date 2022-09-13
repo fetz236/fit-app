@@ -9,27 +9,36 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { auth, db, storage } from '../../firebase'
 import {doc, setDoc} from 'firebase/firestore'
 import { getDownloadURL, ref } from "firebase/storage";
+import MultiSelect from 'react-native-multiple-select'
+import {CountryPicker} from "react-native-country-codes-picker";
 
 const categories = [
     {
+        id: 1,
         name: "Rowing"
     },
     {
+        id: 2,
         name: "Weights"
     },
     {
+        id: 3,
         name: "Bowling"
     },
     {
+        id: 4,
         name: "Yoga"
     },
     {
+        id: 5,
         name: "Cycling"
     },
     {
+        id: 6,
         name: "Karate"
     },
 ];
+
 
 export default function SignUp({navigation}) {
 
@@ -59,8 +68,8 @@ export default function SignUp({navigation}) {
         .then(userCredentials => {
             const user = userCredentials.user;
             const id = user.uid;
-
-            user.sendEmailVerification();
+            
+            //user.sendEmailVerification();
             setDoc(doc(db, "users", id), {
                 rating: 5,
             });
@@ -79,7 +88,11 @@ export default function SignUp({navigation}) {
             });
             
         })
-        .catch(error => alert(error.message))
+        .catch(error => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(`${errorCode}: ${errorMessage}`)
+        })
     };
 
     const checkFName = (first) => {
@@ -92,9 +105,26 @@ export default function SignUp({navigation}) {
         return res
     };
 
+
+    const [show, setShow] = useState(false);
+    const [countryCode, setCountryCode] = useState('');
+
     const checkMobile = (number) => {
-        const cleanNumber = number.replace(/[^0-9]/g, "");
-        return cleanNumber;
+        const regex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+
+        if (regex.test(number)) {
+            console.log("phone number is valid");
+        } else {
+            console.log("phone number is invalid");
+        }
+    };
+
+
+    const [selectedItems, setSelectedItems] = useState([]);
+
+    const onSelectedItemsChanged = (selected) => {
+        console.log(selected)
+        setSelectedItems(selected)
     };
 
     return (
@@ -108,9 +138,10 @@ export default function SignUp({navigation}) {
             <Divider style={signup_style.divider}/>
             <FirstName setF_name={setF_name}/>
             <LastName setL_name={setL_name}/>
-            <Mobile setMobile={setMobile}/>
+            <Mobile setMobile={setMobile} setShow={setShow} countryCode={countryCode} setCountryCode={setCountryCode}/>
             <Email setEmailState = {setEmailState}/>
             <Password setPasswordState = {setPasswordState}/>
+            <Interests selectedItems={selectedItems} onSelectedItemsChanged={onSelectedItemsChanged}/>
             <View style={signup_style.forgot_container}>
                 <TouchableOpacity onPress={() => navigation.replace("LoginScreen" , {
                     navigation:navigation,
@@ -135,6 +166,7 @@ const FirstName = (props) =>(
         <View style={signup_style.input_container}>
             <TextInput autoCorrect={false}
             textContentType='givenName'
+            autoComplete='name-given'
             style={signup_style.ti_container}
             onChangeText={text => props.setF_name(text)}
             underlineColorAndroid='transparent'></TextInput>
@@ -148,6 +180,7 @@ const LastName = (props) =>(
         <View style={signup_style.input_container}>
             <TextInput autoCorrect={false}
             textContentType='familyName'
+            autoComplete='name-family'
             style={signup_style.ti_container}
             onChangeText={text => props.setL_name(text)}
             underlineColorAndroid='transparent'></TextInput>
@@ -162,6 +195,7 @@ const Email = (props) =>(
             <TextInput autoCorrect={false}
             autoCapitalize='none'
             textContentType='emailAddress'
+            autoComplete='email'
             style={signup_style.ti_container}
             onChangeText={text => props.setEmailState(text)}
             underlineColorAndroid='transparent'></TextInput>
@@ -172,47 +206,113 @@ const Email = (props) =>(
 const Mobile = (props) =>(
     <View style={signup_style.signup_container}>
         <Text style={signup_style.sub_heading}> mobile </Text>
+        <View>  
+            <CountryPicker/>
+            <View style={signup_style.input_container}>
+                <TextInput autoCorrect={false}
+                autoCapitalize='none'
+                textContentType='telephoneNumber'
+                autoComplete='tel'
+                keyboardType='number-pad'
+                onChangeText={text => 
+                    props.setMobile(text)}
+                style={signup_style.ti_container}
+                underlineColorAndroid='transparent'></TextInput>
+            </View>
+        </View>
+    </View>
+)
+
+const Password = (props) => (
+    <View style={signup_style.signup_container}>
+        <Text style={signup_style.sub_heading}> password </Text>
         <View style={signup_style.input_container}>
             <TextInput autoCorrect={false}
             autoCapitalize='none'
-            textContentType='telephoneNumber'
-            keyboardType='number-pad'
-            onChangeText={text => 
-                props.setMobile(text)}
+            textContentType='newPassword'
+            autoComplete='password-new'
+            secureTextEntry={true}
             style={signup_style.ti_container}
+            onChangeText={text => props.setPasswordState(text)}
             underlineColorAndroid='transparent'></TextInput>
         </View>
     </View>
 )
 
-const Password = (props) => {
-
-    return(
-        <View style={signup_style.signup_container}>
-            <Text style={signup_style.sub_heading}> password </Text>
-            <View style={signup_style.input_container}>
-                <TextInput autoCorrect={false}
-                autoCapitalize='none'
-                textContentType='newPassword'
-                secureTextEntry={true}
-                style={signup_style.ti_container}
-                onChangeText={text => props.setPasswordState(text)}
-                underlineColorAndroid='transparent'></TextInput>
-            </View>
-        </View>
-    )
-    
-}
-
-const Interests = () => (
+const Interests = (props) => (
     <View style={signup_style.signup_container}>
         <Text style={signup_style.sub_heading}> interests </Text>
-        <View style={signup_style.input_container}>
-            <TextInput autoCorrect={false}
-            autoCapitalize='none'
-            textContentType='password'
-            style={signup_style.ti_container}
-            underlineColorAndroid='transparent'></TextInput>
+        <View style={signup_style.multi_input_container}>
+            <MultiSelect items ={categories}
+            uniqueKey='id'
+            onSelectedItemsChange={props.onSelectedItemsChanged}
+            selectedItems={props.selectedItems}
+            selectText='Pick categories'
+            searchInputPlaceholderText='Search Categories'
+            tagRemoveIconColor='#800020'
+            searchInputStyle={{
+                height:50,
+                width:'80%',
+                backgroundColor:'transparent',
+            }}
+            styleDropdownMenu={{
+                height:50,
+                backgroundColor:'transparent',
+                borderColor:'#800020',
+                borderRadius:20,
+                borderWidth:1,
+
+            }}
+            styleDropdownMenuSubsection={{
+                backgroundColor:'transparent',
+                borderColor:'#800020',
+                marginLeft:'3%',
+                marginRight:'3%',
+                borderBottomColor:'transparent',
+
+            }}
+            styleIndicator={{
+                backgroundColor:'transparent',
+            }}
+            styleInputGroup={{
+                backgroundColor:'transparent',
+                borderColor:'#800020',
+                borderRadius:20,
+                borderWidth:1,
+            }}
+            styleItemsContainer={{
+                backgroundColor:'transparent',
+            }}
+            styleListContainer={{
+                backgroundColor:'transparent',
+            }}
+            styleMainWrapper={{
+                backgroundColor:'transparent',
+            }}
+            styleRowList={{
+                backgroundColor:'transparent',
+            }}
+            styleSelectorContainer={{
+                backgroundColor:'transparent',
+            }}
+            styleTextDropdown={{
+                backgroundColor:'transparent',
+
+            }}
+            styleTextDropdownSelected={{
+                backgroundColor:'transparent',
+            }}
+            tagBorderColor='#800020'
+            tagTextColor='#800020'
+            selectedItemIconColor='#800020'
+            selectedItemTextColor='#800020'
+            itemTextColor='#800020'
+            displayKey='name'
+            submitButtonColor='#800020'
+            submitButtonText='Submit'
+
+            removeSelected 
+            />
         </View>
     </View>
 )

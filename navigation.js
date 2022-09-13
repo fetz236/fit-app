@@ -24,6 +24,9 @@ import LoginScreen from './screens/Authentication/LoginScreen';
 import SignUpScreen from './screens/Authentication/SignUpScreen';
 import ForgotPasswordScreen from './screens/Authentication/ForgotPasswordScreen';
 import AccountCreatedScreen from './screens/Authentication/AccountCreatedScreen';
+import Modify from './screens/UpcomingPage/Modify';
+import Cancel from './screens/UpcomingPage/Cancel';
+
 
 
 
@@ -45,7 +48,7 @@ const HomeStackScreen = () => (
         headerShown:false,
 
     }}>
-        <HomeStack.Screen name="Home" component={Home} options={{animationEnabled:false}}/>
+        <HomeStack.Screen name="HomePage" component={Home} options={{animationEnabled:false}}/>
         <HomeStack.Screen name="TrainerHome" component={TrainerHome} options={{animationEnabled:false}}/>
         <HomeStack.Screen name = "FitnessDetail" component={FitnessDetail}/>
         <HomeStack.Screen name = "ScheduleDetail" component={ScheduleDetail}/>
@@ -69,7 +72,7 @@ const SearchStackScreen = () => (
     <SearchStack.Navigator screenOptions={{
         headerShown:false,
     }}>
-        <SearchStack.Screen name="Search" component={Search}/>
+        <SearchStack.Screen name="SearchPage" component={Search}/>
     </SearchStack.Navigator>
 )
 
@@ -78,6 +81,9 @@ const UpcomingStackScreen = () => (
         headerShown:false,
     }}>
         <UpcomingStack.Screen name="UpcomingHome" component={UpcomingHome}/>
+        <UpcomingStack.Screen name="Modify" component={Modify}/>
+        <UpcomingStack.Screen name="Cancel" component={Cancel}/>
+
 
     </UpcomingStack.Navigator>
 )

@@ -42,6 +42,7 @@ export default function Login({navigation}) {
                     <TextInput autoCorrect={false}
                     autoCapitalize='none'
                     textContentType='emailAddress'
+                    autoComplete='email'
                     value = {loginState}
                     onChangeText ={text => setLoginState(text)}
                     style={login_style.ti_container}
@@ -54,6 +55,7 @@ export default function Login({navigation}) {
                     <TextInput autoCorrect={false}
                     autoCapitalize='none'
                     textContentType='password'
+                    autoComplete='password'
                     value={passwordState}
                     secureTextEntry={true}
                     onChangeText ={text => setPasswordState(text)}

@@ -4,11 +4,11 @@ import { ScrollView } from 'react-native'
 import { View, Text } from 'react-native'
 import Upcoming from '../../components/upcoming/Upcoming'
 
-export default function UpcomingHome() {
+export default function UpcomingHome({navigation}) {
     return (
         <ScrollView>
             <SafeAreaView>
-                <Upcoming/>
+                <Upcoming navigation={navigation}/>
             </SafeAreaView>
         </ScrollView>
     )

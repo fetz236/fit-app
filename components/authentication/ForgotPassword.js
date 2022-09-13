@@ -23,7 +23,8 @@ export default function ForgotPassword({navigation}) {
                     <TextInput autoCorrect={false}
                     autoCapitalize='none'
                     textContentType='emailAddress'
-                     style={fp_style.ti_container}
+                    autoComplete='email'
+                    style={fp_style.ti_container}
                     underlineColorAndroid='transparent'></TextInput>
                 </View>
             </View>

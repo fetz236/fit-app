@@ -10,7 +10,7 @@ import { ScrollView } from 'react-native';
 import { auth, db, storage } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getBlob, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const user_settings = [
@@ -40,12 +40,18 @@ const user_settings = [
     },
 ];
 
+
 export default function UserInfo({navigation, route}) {
     const id = route.params.id;
     const user = auth.currentUser;
 
     const [rating, setRating] = useState('');
-
+    const [url, setUrl] = useState()
+    const [updated, setUpdated] = useState(false)
+    useEffect(async() => {
+        await setUrl(user.photoURL);
+        setUpdated(true);
+      }, []);
 
     useEffect(() => {
         const getRating = async() =>{
@@ -68,77 +74,67 @@ export default function UserInfo({navigation, route}) {
         .catch(error => alert(error.message))
     };
 
-
-
-    
-
-    const [imageURI, setImageURI] = useState({
-        uri: user.photoURL,
-    })
-
     const [uploading, setUploading] = useState(false)
+    
     const selectLibrary = async() => {
-        let result = await ImagePicker.launchImageLibraryAsync({
+        const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4,3],
             quality:1,
+        }).then((result) => {
+            if (result.uri){
+                setUrl(result.uri)
+                setUploading(true);
+            }
+        }
+        ).catch((error) => {
+            alert(error)
         });
-
-        const source = result;
-        setImageURI(source);
     };
 
+
+    const getProfileImage = async() =>{
+        const profile_image_ref = ref(storage, `gs://fit-user-app/profile_images/${user.uid}`);
+        const fileReaderInstance = new FileReader();
+        fileReaderInstance.readAsDataURL(await getBlob(profile_image_ref)).then(
+            (x) => {
+                
+                fileReaderInstance.onload = () => {
+                    base64data = fileReaderInstance.result;                
+                    setUrl(base64data);
+                }
+            }
+        )
+    };
+
+    
     const uploadFile = async() => {
-        setUploading(true);
-        const response = await fetch(imageURI.uri);
+
+        const response = await fetch(url);
         const blob = await response.blob();
         const file_name = user.uid;
 
         var reference = ref(storage, `gs://fit-user-app/profile_images/${file_name}`);
-
-        
-
-        console.log(imageURI)
-        try{
-            uploadBytes(reference, blob).then((snapshot) => {
-                try {  
-                    getDownloadURL(reference).then(
-                        (x) => {
-                            setImageURI({
-                                uri:x,
-                            })
-                        }
-                    )
-
-                }
-                catch(err){
-                    console.log("error",err);
-                }
-
+        await uploadBytes(reference, blob).then(
+            getProfileImage().then(
                 user.updateProfile({
-                    photoURL: imageURI,
+                    photoURL:url,
                 })
-                
-              });
-        }
-        catch(err){
-            console.log("error",err);
-        }
+            )
+        ).catch((err) =>
+            alert(err.message)
+        );
 
         setUploading(false);
 
     };
 
-    const changeProfile = async() => {
-        await selectLibrary();
-        await uploadFile()
-    }
-
     return (
         <ScrollView style={user_css.main_container}>
-            <UserImage imageURI={imageURI} changeProfile={changeProfile}
-                uploadFile={uploadFile}></UserImage>
+            { updated && <UserImage url={url} selectLibrary={selectLibrary}
+                uploadFile={uploadFile} uploading={uploading}></UserImage>
+            }
             <UserDetails displayName={user.displayName}></UserDetails>
             <MyAccount rating={rating}></MyAccount>
             {user_settings.map((settings, index) => (
@@ -158,11 +154,24 @@ export default function UserInfo({navigation, route}) {
 const UserImage = (props) => (
     <View style={user_css.image_border}>
         <TouchableOpacity
-            onPress={() => props.changeProfile()}>
+            onPress={() => props.selectLibrary()}>
             <Image style={
             user_css.user_image
-            } source={{uri:props.imageURI.uri}}/>
+            } source={{uri:props.url}}/>
         </TouchableOpacity>
+        { props.uploading && < TouchableOpacity
+            onPress={() => props.uploadFile()}
+            style={user_css.checkmark}
+            >
+                <View style={user_css.check_box}>
+                    <MaterialCommunityIcons name='check' 
+                    size={30}
+                    color={'white'}/>
+                </View>
+                
+            
+        </TouchableOpacity>
+        }
     </View>
     
 );

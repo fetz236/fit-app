@@ -95,6 +95,7 @@ const UserSearchBar = ({ navigation }) => {
             sections={filteredData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => <Item title={item} />}
+            nestedScrollEnabled={false}
             renderSectionHeader={({ section: { title } }) => (
             <Text style={user_search_bar_css.flat_list_heading}>{title}</Text>
             )}

@@ -9,17 +9,17 @@ import { auth } from '../../firebase';
 
 const trainer_details = [
     {
-        date: '21/02/2022',
+        date: '21/10/2022',
         time: ['11:00',,'13:00','14:00','19:00','20:00'],
         title: "Personal Training",
     },
     {
-        date: '22/02/2022',
+        date: '22/11/2022',
         time: ['11:00','19:00','20:00'],
         title: "Personal Training",
     },
     {
-        date: '22/02/2022',
+        date: '22/12/2022',
         time: ['11:00',,'14:00','15:00','19:00','20:00'],
         title: "Group Training",
     },
@@ -42,13 +42,30 @@ export const ViewSchedule = ({navigation, ...props}) => {
 
     const [trainerState, setTrainerState] = useState(false);
     const [indexState, setIndexState] = useState(-1);
-
-    const onChange = (event, selectedDate) => {
-      const currentDate = selectedDate || date;
-      setShow(Platform.OS === 'ios');
-      setDate(currentDate);
-    };  
     
+
+    const [active_trainer_details, setactive_trainer_details] = useState(trainer_details)
+
+    const changedDate = (event, selectedDate) => {
+        let currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+    
+        const update_trainers = []
+        for(let i=0; i<trainer_details.length; i++){
+            let splitted_date = trainer_details[i].date.split("/")
+            let active_date = new Date(splitted_date[2], splitted_date[1], splitted_date[0])
+            if (active_date.getTime()>= currentDate.getTime()){
+                update_trainers.push(trainer_details[i])
+            }   
+        }
+        setactive_trainer_details(update_trainers);
+
+        
+    };  
+
+    
+
     const showTrainer = (bool, index) =>{
         if (bool){
             setIndexState(index);
@@ -89,7 +106,7 @@ export const ViewSchedule = ({navigation, ...props}) => {
                   mode='date'
                   is24Hour={true}
                   display="default"
-                  onChange={onChange}
+                  onChange={changedDate}
                   style={schedule_style_sheet.date_time_style}
                   />
           </View>
@@ -102,6 +119,7 @@ export const ViewSchedule = ({navigation, ...props}) => {
           <DisplaySchedule trainerState={trainerState} 
             indexState={indexState} 
             showTrainer={showTrainer} 
+            active_trainer_details={active_trainer_details}
             checkAuthentication={checkAuthentication}/>
           
       </View>
@@ -111,7 +129,7 @@ export const ViewSchedule = ({navigation, ...props}) => {
 const DisplaySchedule = ({navigation, ...props}) => {
     return (
     <View showsVerticalScrollIndicator={false} style={{marginBottom:'20%'}}>
-        {trainer_details.map((trainer,index) => (
+        {props.active_trainer_details.map((trainer,index) => (
             <View key={index}>
                 <View style={schedule_style_sheet.main_container}>
                     <View style= {schedule_style_sheet.date_container}>

@@ -97,5 +97,9 @@ export const signup_style = StyleSheet.create({
         marginLeft:'auto',
         right:0,
     },
+
+    multi_input_container:{
+        width:'95%',
+    },
 });
 

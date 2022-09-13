@@ -5,6 +5,9 @@ import { TouchableOpacity } from 'react-native'
 import { View, Text } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { checkout_style } from '../../styles/checkout/CheckoutPageStyle'
+import { CardField, useStripe } from '@stripe/stripe-react-native';
+
+
 export default function CheckoutPage({navigation}) {
     
     const [changeState, setChangeState] = useState(false);
@@ -14,16 +17,26 @@ export default function CheckoutPage({navigation}) {
     };
 
 
+    const { confirmPayment } = useStripe();
+    const [cardDetails, setCardDetails] = useState()
+
+    const handlePayPress = async() => {
+        if(!cardDetails?.complete){
+            alert("Card Details are not complet")
+        }
+    }
+
     return (
         <SafeAreaView>
             
             <Information time="12"/>
             <Order/>
-            <Payment changePayment={changePayment} navigation={navigation}/>
+            <Payment confirmPayment={confirmPayment} changePayment={changePayment} setCardDetails={setCardDetails} 
+            navigation={navigation}/>
             { 
                 changeState && <ChangePayment/>
             }
-            <Confirmation/>
+            <Confirmation handlePayPress={handlePayPress}/>
         </SafeAreaView>
 
     )
@@ -77,21 +90,43 @@ const Payment = (props) => (
     <View style ={checkout_style.payment_container}>
         <View style={checkout_style.payment_header_info}>
             <Text style={checkout_style.payment_header}> Payment </Text>
-            <TouchableOpacity style={checkout_style.payment_change}>
+            <TouchableOpacity style={checkout_style.payment_change}
+            onPress={() => props.navigation.navigate("ChangePayment")}>
                 <Text style={checkout_style.payment_change_text}> Change Payment method </Text>
             </TouchableOpacity>
         </View>
-        <Divider width={1} style={checkout_style.payment_divider}/>
         <View style={checkout_style.payment_info}>
-            <Text style={checkout_style.payment_text}>Selected Payment</Text>
+
+            <CardField
+                postalCodeEnabled={false}
+                placeholders={{
+                number: '1234 5678 9012 3456',
+                }}
+                cardStyle={{
+                backgroundColor: '#d8d8d8',
+                textColor: '#800020',
+                }}
+
+                style={{
+                width: '100%',
+                height: 50,
+                marginTop:'2%',
+                backgroundColor: 'transparent',
+                }}
+                onCardChange={(cardDetails) => {
+                    props.setCardDetails(cardDetails)
+                }}
+                onFocus={(focusedField) => {
+                console.log('focusField', focusedField);
+                }}
+            />
         </View>
-        <Divider width={1} style={checkout_style.payment_divider}/>
     </View>
 )
 
-const Confirmation = () => (
+const Confirmation = (props) => (
     <View style={checkout_style.button_container}>
-        <Button title="Continue" color="white"/>
+        <Button title="Pay" color="white" onPress={props.handlePayPress}/>
     </View>
 )
 

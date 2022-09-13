@@ -5607,6 +5607,11 @@
     "jscodeshift" "^0.11.0"
     "nullthrows" "^1.1.1"
 
+"react-native-country-codes-picker@^2.0.0":
+  "integrity" "sha512-QWCP4hraJxa8Pj6+Q0rW+YT1kEEIF6mTA9YSObe9gci4nUE6DwHA/q706ECqhnZy7QJsdqG1bnnwQD6VKNAmoA=="
+  "resolved" "https://registry.npmjs.org/react-native-country-codes-picker/-/react-native-country-codes-picker-2.0.0.tgz"
+  "version" "2.0.0"
+
 "react-native-elements@^3.4.2":
   "integrity" "sha512-m0eAWOn7JuR1wNTNY0WHuaqst4LI/gFE4N5Bbyfsc4DiryWsMST7aAg5w/Gos4IexWIzhLKCIkPxthND1m/8Xg=="
   "resolved" "https://registry.npmjs.org/react-native-elements/-/react-native-elements-3.4.2.tgz"

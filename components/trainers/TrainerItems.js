@@ -7,25 +7,25 @@ import { style_sheet } from '../../styles/trainers/TrainerItemsStyle'
 
 const trainer_details = [
     {
-        name: "Trainer 1",
-        description: "wys g i do karate and that",
-        price: "69/hr",
+        name: "Trainer Adam",
+        description: "Karate instructor",
+        price: "20/hr",
         image: require('../../assets/images/store_images/karate_1.jpeg'),
         rating: 5,
         total_ratings: 100,
     },
     {
-        name: "Roadman Trainer",
-        description: "Free Sheeeeshh Class",
+        name: "Trainer Kate",
+        description: "Spinning Class",
         price: "15/hr",
         image: require('../../assets/images/store_images/karate_1.jpeg'),
         rating: 4,
         total_ratings: 40,
     },
     {
-        name: "Not Digga d",
-        description: "Free Siuuu Class",
-        price: "bare ps uno/hr",
+        name: "Trainer Molly",
+        description: "Weightligting Class",
+        price: "25/hr",
         image: require('../../assets/images/store_images/karate_1.jpeg'),
         rating: 4.5,
         total_ratings: 140,

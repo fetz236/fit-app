@@ -36,17 +36,31 @@ const trainer_details = [
 ];
 
 export const TrainerSchedule = ({navigation, ...props}) => {
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(te());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
     const [trainerState, setTrainerState] = useState(false);
     const [indexState, setIndexState] = useState(-1);
 
-    const onChange = (event, selectedDate) => {
-      const currentDate = selectedDate || date;
-      setShow(Platform.OS === 'ios');
-      setDate(currentDate);
+    const [active_trainer_details, setactive_trainer_details] = useState(trainer_details)
+
+    const changedDate = (event, selectedDate) => {
+        let currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+    
+        const update_trainers = []
+        for(let i=0; i<trainer_details.length; i++){
+            let splitted_date = trainer_details[i].date.split("/")
+            let active_date = te(splitted_date[2], splitted_date[1], splitted_date[0])
+            if (active_date.getTime()>= currentDate.getTime()){
+                update_trainers.push(trainer_details[i])
+            }   
+        }
+        setactive_trainer_details(update_trainers);
+
+        
     };  
     
     const showTrainer = (bool, index) =>{
@@ -60,10 +74,9 @@ export const TrainerSchedule = ({navigation, ...props}) => {
         
         if (auth.currentUser) {
             navigation.navigate("Checkout",{
-                time: props.time,
                 navigation: navigation,
-            }
-            )
+                time: props.time,
+            })
         } else {
             navigation.navigate("AuthenticationScreen", {
                 navigation:navigation,
@@ -89,7 +102,7 @@ export const TrainerSchedule = ({navigation, ...props}) => {
                   mode='date'
                   is24Hour={true}
                   display="default"
-                  onChange={onChange}
+                  onChange={changedDate}
                   style={schedule_style_sheet.date_time_style}
                   />
           </View>
@@ -102,6 +115,7 @@ export const TrainerSchedule = ({navigation, ...props}) => {
           <DisplaySchedule trainerState={trainerState} 
             indexState={indexState} 
             showTrainer={showTrainer} 
+            active_trainer_details = {active_trainer_details}
             checkAuthentication={checkAuthentication}/>
           
       </View>
@@ -111,7 +125,7 @@ export const TrainerSchedule = ({navigation, ...props}) => {
 const DisplaySchedule = ({navigation, ...props}) => {
     return (
     <View showsVerticalScrollIndicator={false} style={{marginBottom:'20%'}}>
-        {trainer_details.map((trainer,index) => (
+        {props.active_trainer_details.map((trainer,index) => (
             <View key={index}>
                 <View style={schedule_style_sheet.main_container}>
                     <View style= {schedule_style_sheet.date_container}>
@@ -170,78 +184,3 @@ const TrainerCourse = ({navigation, ...props}) => (
 );
 
   export default TrainerSchedule;
-
-/*
-const [date, setDate] = useState(new Date(1598051730000));
-const [mode, setMode] = useState('date');
-const [show, setShow] = useState(false);
-
-const onChange = (event, selectedDate) => {
-  const currentDate = selectedDate || date;
-  setShow(Platform.OS === 'ios');
-  setDate(currentDate);
-};
-
-const schedule_detail = {
-    date: '21/02/2021',
-    time: '19:00',
-    title: "Free Gym",
-
-};
-
-
-
-export default function TrainerSchedule({navigation, ...props}) {
-
-
-  return (
-    <View style ={{
-        marginTop:80,
-    }}>
-        <View style ={{
-            justifyContent: 'center',
-            alignItems: 'center',
-        }}>
-            <Text style={{
-                fontSize: 24,
-            }}>Training Date</Text>
-            <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode='date'
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-                style={{
-                    width: 100,
-                    alignItems:'center',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    marginTop: 10,
-                }}
-                />
-        </View>
-        <Divider style={{
-            marginTop:25,
-        }}>
-        </Divider>
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View style= {{
-                marginTop:5,
-                marginBottom:5,
-                marginLeft:10,
-            }}>
-                <Text style={{
-                    fontSize: 20
-                }}> Date </Text>
-            </View>
-                <ScheduleHeader></ScheduleHeader>         
-        </ScrollView>
-        
-    </View>
-  );
-}
-
-
-
-*/
