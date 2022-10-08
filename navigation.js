@@ -12,8 +12,6 @@ import TrainerHome from './screens/HomePage/TrainerHome'
 import TrainerScheduleDetail from './screens/HomePage/TrainerScheduleDetail'
 import TrainerDetail from './screens/HomePage/TrainerDetail'
 import UserDetail from './screens/HomePage/UserDetail'
-import { TabView } from 'react-native-elements';
-import { Tab } from 'react-native-elements/dist/tab/Tab';
 import Search from './screens/SearchPage/SearchHome';
 import UpcomingHome from './screens/UpcomingPage/UpcomingHome';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -26,6 +24,13 @@ import ForgotPasswordScreen from './screens/Authentication/ForgotPasswordScreen'
 import AccountCreatedScreen from './screens/Authentication/AccountCreatedScreen';
 import Modify from './screens/UpcomingPage/Modify';
 import Cancel from './screens/UpcomingPage/Cancel';
+import BookingConfirmation from './components/checkout/BookingConfirmation';
+import ViewPerks from './components/checkout/ViewPerks';
+import AccountDetailsScreen from './screens/HomePage/AccountDetailsScreen';
+import ContactPreferencesScreen from './screens/HomePage/ContactPreferencesScreen';
+import PaymentDetailsScreen from './screens/HomePage/PaymentDetailsScreen';
+import ReferUserScreen from './screens/HomePage/ReferUserScreen';
+import { header_style } from './styles/components/HeaderStyle';
 
 
 
@@ -51,19 +56,53 @@ const HomeStackScreen = () => (
         <HomeStack.Screen name="HomePage" component={Home} options={{animationEnabled:false}}/>
         <HomeStack.Screen name="TrainerHome" component={TrainerHome} options={{animationEnabled:false}}/>
         <HomeStack.Screen name = "FitnessDetail" component={FitnessDetail}/>
-        <HomeStack.Screen name = "ScheduleDetail" component={ScheduleDetail}/>
-        <HomeStack.Screen name = "TrainerDetail" component={TrainerDetail}/>
-        <HomeStack.Screen name = "TrainerScheduleDetail" component={TrainerScheduleDetail}/>
-        <HomeStack.Screen name = "UserDetail" component={UserDetail}/>
-        <HomeStack.Screen name = "Checkout" component={Checkout}/>
-        <HomeStack.Screen name = "ChangePayment" component={ChangePayment}/>
+        <HomeStack.Screen name = "ScheduleDetail" component={ScheduleDetail} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:' Select Class Date'
+            }}/>
+        <HomeStack.Screen name = "TrainerDetail" component={TrainerDetail} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white',headerTitle:''
+            }}/>
+        <HomeStack.Screen name = "TrainerScheduleDetail" component={TrainerScheduleDetail} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:'Select Trainer Date'
+            }}/>
+        <HomeStack.Screen name = "UserDetail" component={UserDetail} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:''
+            }}/>
+        <HomeStack.Screen name = "AccountDetailsScreen" component={AccountDetailsScreen} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:' Account Details'
+            }}/>
+        <HomeStack.Screen name = "PaymentDetailsScreen" component={PaymentDetailsScreen} options={{headerShown:true, 
+        headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+        headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:'Payment Methods'
+            }}/>
+        <HomeStack.Screen name = "ContactPreferencesScreen" component={ContactPreferencesScreen} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:' Contact Preferences'
+            }}/>
+        <HomeStack.Screen name = "ReferUserScreen" component={ReferUserScreen} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:' Refer a Friend'
+            }}/>
+        <HomeStack.Screen name = "Checkout" component={Checkout} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:' Checkout'
+            }}/>
+        <HomeStack.Screen name = "ChangePayment" component={ChangePayment} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:' Change Payment'
+            }}/>
+        <HomeStack.Screen name = "BookingConfirmation" component={BookingConfirmation}/>
+        <HomeStack.Screen name = "ViewPerks" component={ViewPerks}/>
         <HomeStack.Screen name = "AuthenticationScreen" component={AuthenticationScreen} options={{ presentation:'modal'}}/>
         <HomeStack.Screen name = "LoginScreen" component={LoginScreen} options={{ presentation:'modal', transitionSpec:{open:config_transition, close:config_transition}, animationEnabled:true}}/>
         <HomeStack.Screen name = "SignUpScreen" component={SignUpScreen} options={{ presentation:'modal', transitionSpec:{open:config_transition, close:config_transition}, animationEnabled:true}}/>
         <HomeStack.Screen name = "ForgotPasswordScreen" component={ForgotPasswordScreen} options={{ presentation:'modal', transitionSpec:{open:config_transition, close:config_transition}, animationEnabled:true}}/>
         <HomeStack.Screen name = "AccountCreatedScreen" component={AccountCreatedScreen} options={{ presentation:'modal', transitionSpec:{open:config_transition, close:config_transition}, animationEnabled:true}}/>
-
-
     </HomeStack.Navigator>
 
 )
@@ -81,8 +120,14 @@ const UpcomingStackScreen = () => (
         headerShown:false,
     }}>
         <UpcomingStack.Screen name="UpcomingHome" component={UpcomingHome}/>
-        <UpcomingStack.Screen name="Modify" component={Modify}/>
-        <UpcomingStack.Screen name="Cancel" component={Cancel}/>
+        <UpcomingStack.Screen name="Modify" component={Modify} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:'Modify Booking'
+            }}/>
+        <UpcomingStack.Screen name="Cancel" component={Cancel} options={{headerShown:true, 
+            headerStyle:header_style.full_container, headerBackTitleVisible:false, 
+            headerTitleStyle:header_style.title, headerTintColor: 'white', headerTitle:'Cancel Booking'
+            }}/>
 
 
     </UpcomingStack.Navigator>

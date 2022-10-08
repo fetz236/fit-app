@@ -30,7 +30,7 @@ export const signup_style = StyleSheet.create({
         marginLeft:'3%',
     },
     input_container:{
-        height:50,
+        height:60,
         marginRight:'3%',
         borderRadius:30,
         borderWidth:1,
@@ -102,4 +102,5 @@ export const signup_style = StyleSheet.create({
         width:'95%',
     },
 });
+
 

@@ -9,56 +9,56 @@ import {trainer_style, trainer_schedule} from '../../styles/trainers/ViewTrainer
 
 export default function ViewTrainer({ navigation, ...props }){
 
-    const trainers = [
-        {
-            name: props.route.params.name,
-            description: props.route.params.description,
-            price: props.route.params.price,
-            image: props.route.params.image,
-            rating: props.route.params.rating,
-            total_ratings: props.route.params.total_ratings,
-        },
-    ]
+    const trainer = {
+        first_name: props.route.params.first_name,
+        last_name: props.route.params.last_name,
+        id: props.route.params.id,
+        categories: props.route.params.categories,
+        mobile: props.route.params.mobile,
+        description: props.route.params.description,
+        price: props.route.params.price,
+        photoURL: props.route.params.photoURL,
+        rating: props.route.params.rating,
+        reviews: props.route.params.reviews,
+    }
     return (
         <View>
-            {trainers.map((trainer,index) => 
-            (   
-                <View key={index}>
-                    <ScrollView>
-                    <TrainerImage image={trainer.image} rating={trainer.rating} total_ratings={trainer.total_ratings}></TrainerImage>
-                    <TrainerDetails name = {trainer.name} description={trainer.description} ></TrainerDetails>
-                    <TrainerAbout></TrainerAbout>
-                    <TrainerLocations></TrainerLocations>
+            <View>
+                <ScrollView>
+                <TrainerImage photoURL={trainer.photoURL} rating={trainer.rating} reviews={trainer.reviews}></TrainerImage>
+                <TrainerDetails name = {trainer.first_name+ " "+ trainer.last_name} description={trainer.description} ></TrainerDetails>
+                <TrainerAbout></TrainerAbout>
+                <TrainerLocations></TrainerLocations>
+                <View style={
+                    trainer_schedule.schedule_container
+                }>
                     <View style={
-                        trainer_schedule.schedule_container
+                        trainer_schedule.schedule_button_style
                     }>
-                        <View style={
-                            trainer_schedule.schedule_button_style
-                        }>
-                            <TouchableOpacity style={
-                                trainer_schedule.touchable_opacity
-                            }
-                            onPress={() => navigation.navigate("TrainerScheduleDetail", {
-                                name: trainer.name,
-                                description: trainer.description,
-                                price: trainer.price,
-                                image: trainer.image,
-                                rating: trainer.rating,
-                                total_ratings: trainer.total_ratings,
-                                navigation: navigation,
-                            }
-                            )}>
-                                <Text style={
-                                    trainer_schedule.button_text
-                                }> View Schedule </Text>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style={
+                            trainer_schedule.touchable_opacity
+                        }
+                        onPress={() => navigation.navigate("TrainerScheduleDetail", {
+                            first_name: trainer.first_name,
+                            last_name: trainer.last_name,
+                            id: trainer.id,
+                            categories: trainer.categories,
+                            mobile: trainer.mobile,
+                            description: trainer.description,
+                            price: trainer.price,
+                            photoURL: trainer.photoURL,
+                            rating: trainer.rating,
+                            reviews: trainer.reviews,
+                        }
+                        )}>
+                            <Text style={
+                                trainer_schedule.button_text
+                            }> View Schedule </Text>
+                        </TouchableOpacity>
                     </View>
-                 </ScrollView>
                 </View>
-
-            ))}
-
+                </ScrollView>
+            </View>
         </View>
     )
 }
@@ -67,7 +67,7 @@ const TrainerImage = (props) => (
     <>
     <Image style={
         trainer_style.trainer_image
-    }source={props.image}></Image>
+    }source={{uri: props.photoURL}}></Image>
     <View style={
         trainer_style.trainer_rating
     }>
@@ -77,7 +77,7 @@ const TrainerImage = (props) => (
         }}> </Rating>
     </View>
     <View style={trainer_style.trainer_rating}>
-        <Text style={trainer_style.rating_body}> {props.total_ratings} Reviews</Text>
+        <Text style={trainer_style.rating_body}> {props.reviews} Reviews</Text>
     </View>
 
     </>

@@ -5,7 +5,7 @@ import { View, Text } from 'react-native'
 import { auth_style } from '../../styles/authentication/AuthenticationHomeStyle'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function AuthenticationHome({navigation}) {
+export default function AuthenticationHome({navigation, ...props}) {
     return (
             <>
                 <Icon name="close" color='#800020' size={50} style={auth_style.close_button} 
@@ -24,12 +24,17 @@ export default function AuthenticationHome({navigation}) {
                     <View style ={auth_style.auth_container}>
                             <View style={auth_style.auth_info}>
                                 <TouchableOpacity
-                                onPress={() => navigation.replace("LoginScreen")}>
+                                onPress={() => navigation.replace("LoginScreen",{
+                                    isCheckout: props.route.params.isCheckout
+
+                                })}>
                                     <Text style={auth_style.auth_header}>Login</Text>
 
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{marginTop:'10%',}} 
-                                onPress={() => navigation.replace("SignUpScreen")}>
+                                onPress={() => navigation.replace("SignUpScreen",{
+                                    isCheckout: props.route.params.isCheckout
+                                })}>
                                     <Text style={auth_style.auth_header}>Sign Up</Text>
                                 </TouchableOpacity>
 

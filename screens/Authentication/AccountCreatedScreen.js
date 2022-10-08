@@ -3,10 +3,10 @@ import { ScrollView } from 'react-native'
 import { View, Text } from 'react-native'
 import AccountCreated from '../../components/authentication/AccountCreated'
 
-export default function AccountCreatedScreen({navigation}) {
+export default function AccountCreatedScreen({route, navigation}) {
     return (
         <ScrollView>
-            <AccountCreated navigation={navigation}/>
+            <AccountCreated route={route} navigation={navigation}/>
         </ScrollView>
     )
 }

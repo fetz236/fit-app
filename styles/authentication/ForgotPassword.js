@@ -75,5 +75,27 @@ export const fp_style = StyleSheet.create({
         marginLeft:'auto',
         right:0,
     },
+    forgot_container_box:{
+        marginTop:'10%',
+        alignSelf:'center',
+        justifyContent:'center',
+        borderWidth:2,
+        borderRadius:50,
+        borderColor:'#800020',
+        backgroundColor:'#800020',
+        marginBottom:'10%',
+    },
+    touchable_opacity:{
+        marginLeft:'1.5%',
+        marginRight:'2.5%',
+        marginTop:'2%',
+    },
+    sub_heading_white:{
+        color: 'white',
+        fontSize:20,
+        fontWeight:'600',
+        marginLeft:'1%',
+        marginBottom:'2%',
+    },
 });
 

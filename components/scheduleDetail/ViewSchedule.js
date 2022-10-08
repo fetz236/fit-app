@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Platform, StyleSheet} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Divider } from 'react-native-elements';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { schedule_style_sheet } from '../../styles/trainers/TrainerScheduleStyle'
 import { Button } from 'react-native';
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 
 const trainer_details = [
     {
@@ -36,6 +36,96 @@ const trainer_details = [
 ];
 
 export const ViewSchedule = ({navigation, ...props}) => {
+
+    /*
+        Object {
+            "class": Object {
+                "categories": Array [
+                "Abw5hySlBsbHvcKN4vM9",
+                ],
+                "curr_cap": "0",
+                "description": "Advanced Spinning class",
+                "id": "4vY771DMIX7422rzWW7l",
+                "image": "https://firebasestorage.googleapis.com/v0/b/fit-user-app/o/store_images%2FjP6AalbtPcjk0Lbcxo5q%2Fclass_images%2F20220923135655c.jpg?alt=media&token=26f06243-25ac-4c8b-af9c-ef9dec5d06c7",
+                "max_cap": 25,
+                "name": "Spinning",
+                "price": "$80",
+            },
+            "fc": Object {
+                "categories": Array [
+                "q9TU23VcpJh1YeyBNlU9",
+                "1PVAG7I7cTnxNZqCMehW",
+                ],
+                "id": "jP6AalbtPcjk0Lbcxo5q",
+                "image": Array [
+                "https://firebasestorage.googleapis.com/v0/b/fit-user-app/o/store_images%2FjP6AalbtPcjk0Lbcxo5q%2F20220921003536.jpg?alt=media&token=63bf024e-396d-4655-aced-a10149ded044",
+                "https://firebasestorage.googleapis.com/v0/b/fit-user-app/o/store_images%2FjP6AalbtPcjk0Lbcxo5q%2F20220921003535.jpg?alt=media&token=4366df23-90f9-4af6-a47e-9bcd305af10b",
+                "https://firebasestorage.googleapis.com/v0/b/fit-user-app/o/store_images%2FjP6AalbtPcjk0Lbcxo5q%2F20220921003233.jpg?alt=media&token=269cbc10-7a49-48d4-8fc3-2a7ef2cdb69b",
+                "https://firebasestorage.googleapis.com/v0/b/fit-user-app/o/store_images%2FjP6AalbtPcjk0Lbcxo5q%2F20220921003433.jpg?alt=media&token=846b35a2-9b61-4fad-a335-97c81c4cbc90",
+                "https://firebasestorage.googleapis.com/v0/b/fit-user-app/o/store_images%2FjP6AalbtPcjk0Lbcxo5q%2F20220921003400.jpg?alt=media&token=b0ecdd9d-3de5-40ca-9810-9212044e6d49",
+                "https://firebasestorage.googleapis.com/v0/b/fit-user-app/o/store_images%2FjP6AalbtPcjk0Lbcxo5q%2F20220921003335.jpg?alt=media&token=0d9bd9e2-af1c-49fc-a645-2960becd05c7",
+                "https://firebasestorage.googleapis.com/v0/b/fit-user-app/o/store_images%2FjP6AalbtPcjk0Lbcxo5q%2F20220921003333.jpg?alt=media&token=4b0b0c3a-c409-4d29-8a0e-583794d2f29c",
+                ],
+                "location": Object {
+                "latitude": 51.51435857837156,
+                "longitude": -0.15710420123305274,
+                },
+                "name": "The Gym Way - Marble Arch",
+                "rating": 5,
+                "reviews": 1,
+                "subscription": "red",
+                "telephone_number": "+442076294655",
+            },
+        }
+    */
+    const class_selected = {
+        class:props.route.params.class,
+        fc:props.route.params.fc,
+    }
+
+    const [class_schedule, setClassSchedule] = useState([])
+    const [loaded_class_schedule, setLoadedClassSchedule] = useState(false)
+    
+    useEffect( async() => {
+        const loadData = async() => {
+            let class_data = []
+            db.collection('schedule').where("cl", "==", class_selected.class.id).get()
+            .then(snapshot => {
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    data.id = doc.id
+                    class_data.push(data)
+                })
+            }).then(function(){
+                const today_date = new Date()
+                const trainer_temp = []
+                let curr = new Date()
+
+                for (let i =0; i<21; i++){
+                    curr.setDate(date.getDate() +i)
+                    for(let j =0; j<class_data.length; j++){
+                        if (class_data[j].day == curr.getDay()){
+                            console.log(class_data[j])
+                            trainer_temp.push({
+                                'date':curr.getDate(),
+                                'time':class_data[j].start_time+"-"+class_data[j].end_time,
+                            })
+                        }
+                    }
+                    
+                }
+                setClassSchedule(class_data)
+                setLoadedClassSchedule(true)
+            }
+            ).catch(err => alert(err))
+            
+        }
+
+        if (class_schedule.length == 0){
+            await loadData()
+        }
+    }, [])
+
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
@@ -44,7 +134,7 @@ export const ViewSchedule = ({navigation, ...props}) => {
     const [indexState, setIndexState] = useState(-1);
     
 
-    const [active_trainer_details, setactive_trainer_details] = useState(trainer_details)
+    const [active_trainer_details, setactive_trainer_details] = useState(class_schedule)
 
     const changedDate = (event, selectedDate) => {
         let currentDate = selectedDate || date;
@@ -64,7 +154,6 @@ export const ViewSchedule = ({navigation, ...props}) => {
         
     };  
 
-    
 
     const showTrainer = (bool, index) =>{
         if (bool){
@@ -77,13 +166,14 @@ export const ViewSchedule = ({navigation, ...props}) => {
         
         if (auth.currentUser) {
             navigation.navigate("Checkout",{
-                time: props.time,
                 navigation: navigation,
+                time: props.time,
             }
             )
         } else {
             navigation.navigate("AuthenticationScreen", {
                 navigation:navigation,
+                isCheckout: true,
             })
         }
         
@@ -91,15 +181,12 @@ export const ViewSchedule = ({navigation, ...props}) => {
 
     return (
       <View style ={{
-          marginTop:'13%',
+          marginTop:'5%',
       }}>
           <View style ={{
               justifyContent: 'center',
               alignItems: 'center',
           }}>
-              <Text style={{
-                  fontSize: 24,
-              }}>Select Date</Text>
               <DateTimePicker
                   testID="dateTimePicker"
                   value={date}

@@ -1,39 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux'
+import { db } from '../../firebase';
 import { course_sheet } from '../../styles/fitnessDetail/CourseItemsStyle';
 
-const course_details = [
-    {
-        name: "Gym Class",
-        description: "Free Trainer Class",
-        price: "19.20",
-        image : require('../../assets/images/store_images/karate_1.jpeg'),
-    },
-    {
-        name: "Spinning Class",
-        description: "Group Fitness class",
-        price: "12.20",
-        image : require('../../assets/images/store_images/karate_1.jpeg'),
-    },
-    {
-        name: "Siuuu Class",
-        description: "Free Siuuu Class",
-        price: "12.20",
-        image : require('../../assets/images/store_images/karate_1.jpeg'),
-    },
-    {
-        name: "Siuuu Class",
-        description: "Free Siuuu Class",
-        price: "12.20",
-        image : require('../../assets/images/store_images/karate_1.jpeg'),
-    },
-];
-
-
 export default function CourseItems({navigation, ...props}) {
+    
+    const fc = {
+        id: props.route.params.id,
+        name: props.route.params.name,
+        image: props.route.params.image,
+        reviews: props.route.params.reviews,
+        rating: props.route.params.rating,
+        location: props.route.params.location, 
+        subscription: props.route.params.subscription,
+        telephone_number: props.route.params.telephone_number,
+        categories: props.route.params.categories,
+    }
+
     const dispatch = useDispatch();
     
     const select_item = (item) => dispatch({
@@ -41,19 +27,62 @@ export default function CourseItems({navigation, ...props}) {
         payload: item,
     });
 
+    const [classes, setClasses] = useState([])
+    const [loaded_classes, setLoadedClasses] = useState(false)
+
+    
+    useEffect( async() => {
+        const loadData = async() => {
+            let class_data = []
+            db.collection('classes').where("fc", "==", fc.id).get()
+            .then(snapshot => {
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    data.id = doc.id
+                    class_data.push(data)
+                })
+            }).then(function(){
+                setClasses(class_data)
+                setLoadedClasses(true)
+            }
+            ).catch(err => alert(err))
+            
+        }
+
+        if (classes.length == 0){
+            await loadData()
+        }
+    }, [])
+
     return (
-        <View style={{backgroundColor: 'white'}} showsVerticalScrollIndicator={false}>
-        {course_details.map((course, index) => (
+        <> 
+            { loaded_classes && 
+                <>
+                    <MainComponent navigation={navigation} classes={classes} fc={fc}/>
+                </>
+            }
+        </>
+    )
+}
+
+const MainComponent = (props) => (
+    <View style={{backgroundColor: 'white'}} showsVerticalScrollIndicator={false}>
+        {props.classes.map((course, index) => (
             <TouchableOpacity activeOpacity={1} style={{
                 }}
                 key={index}
-                onPress={() => navigation.navigate("ScheduleDetail", {
-                    name: "fit.name",
-                    image: "fit.image",
-                    price: "fit.price",
-                    reviews: "fit.reviews",
-                    rating: "fit.rating",
-                    categories: "fit.categories",
+                onPress={() => props.navigation.navigate("ScheduleDetail", {
+                    class: {
+                        id: course.id,
+                        name: course.name,
+                        image: course.image,
+                        price: course.price,
+                        description: course.description,
+                        curr_cap: course.curr_cap,
+                        max_cap: course.max_cap,
+                        categories: course.categories
+                    },
+                    fc:props.fc,
                 }
             )}>
                 <View style ={{marginBottom:10}}>
@@ -66,21 +95,21 @@ export default function CourseItems({navigation, ...props}) {
                 </View>
             </TouchableOpacity>
         ))}
-        </View>
-    )
-}
+    </View>
+)
+
 
 const CourseInfo = (props) => (
     <View style={{width:240, justifyContent:"space-evenly"}}>
         <Text style={course_sheet.course_title}>{props.course_details.name}</Text>
         <Text style={course_sheet.course_text}>{props.course_details.description}</Text>
-        <Text style={course_sheet.course_text}>${props.course_details.price}</Text>
+        <Text style={course_sheet.course_text}>{props.course_details.price}</Text>
 
     </View>
 )
 
 const CourseImage = (props) => (
     <View>
-        <Image source={props.course_details.image} style={course_sheet.course_image}/>
+        <Image source={{ uri:props.course_details.image}} style={course_sheet.course_image}/>
     </View>
 )

@@ -10,7 +10,7 @@ import { Modal } from 'react-native'
 import { auth, db } from '../../firebase'
 import { doc, getDoc } from 'firebase/firestore'
 
-export default function Login({navigation}) {
+export default function Login({navigation, ...props}) {
     const [loginState, setLoginState] = useState('');
     const [passwordState, setPasswordState] = useState('');
 
@@ -19,9 +19,17 @@ export default function Login({navigation}) {
         auth
         .signInWithEmailAndPassword(loginState, passwordState)
         .then(userCredentials => {
-            navigation.replace("UserDetail", {
-                navigation:navigation,
-            });
+            if(props.route.params.isCheckout){
+                navigation.replace("Checkout", {
+                    navigation:navigation,
+                });
+            }
+            else{
+                navigation.replace("UserDetail", {
+                    navigation:navigation,
+                });
+            }
+            
         })
         .catch(error => alert(error.message))
     };

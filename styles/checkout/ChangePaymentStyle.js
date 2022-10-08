@@ -25,7 +25,7 @@ export const change_payment_css = StyleSheet.create({
         color:'#a2a2a2',
     },
     existing_container:{
-        marginTop:'2%',
+        marginTop:'10%',
         marginLeft:'3%',
     },
     existing_header:{
@@ -46,7 +46,7 @@ export const change_payment_css = StyleSheet.create({
         color: '#8d8d8d'
     },
     add_container:{
-        marginTop:'10%',
+        marginTop:'20%',
         marginLeft:'3%',
     },
     add_header:{

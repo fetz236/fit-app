@@ -36,7 +36,7 @@ const trainer_details = [
 ];
 
 export const TrainerSchedule = ({navigation, ...props}) => {
-    const [date, setDate] = useState(te());
+    const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
@@ -53,7 +53,7 @@ export const TrainerSchedule = ({navigation, ...props}) => {
         const update_trainers = []
         for(let i=0; i<trainer_details.length; i++){
             let splitted_date = trainer_details[i].date.split("/")
-            let active_date = te(splitted_date[2], splitted_date[1], splitted_date[0])
+            let active_date = new Date(splitted_date[2], splitted_date[1], splitted_date[0])
             if (active_date.getTime()>= currentDate.getTime()){
                 update_trainers.push(trainer_details[i])
             }   
@@ -80,6 +80,7 @@ export const TrainerSchedule = ({navigation, ...props}) => {
         } else {
             navigation.navigate("AuthenticationScreen", {
                 navigation:navigation,
+                isCheckout: true,
             })
         }
         
@@ -87,15 +88,12 @@ export const TrainerSchedule = ({navigation, ...props}) => {
 
     return (
       <View style ={{
-          marginTop:'13%',
+          marginTop:'5%',
       }}>
           <View style ={{
               justifyContent: 'center',
               alignItems: 'center',
           }}>
-              <Text style={{
-                  fontSize: 24,
-              }}>Select Date</Text>
               <DateTimePicker
                   testID="dateTimePicker"
                   value={date}

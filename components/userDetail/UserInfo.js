@@ -10,33 +10,25 @@ import { ScrollView } from 'react-native';
 import { auth, db, storage } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
-import { getBlob, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getBlob, getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const user_settings = [
     {
         name:'Account Details',
-    },
-    {
-        name:'Booking Details',
+        navName: 'AccountDetailsScreen',
     },
     {
         name:'Payment Methods',
+        navName: 'PaymentDetailsScreen',
     },
     {
         name:'Contact Preferences',
+        navName: 'ContactPreferencesScreen',
     },
     {
         name:'Refer a Friend',
-    },
-    {
-        name:'TBD',
-    },
-    {
-        name:'TBD Details',
-    },
-    {
-        name:'TBD Details',
+        navName: 'ReferUserScreen',
     },
 ];
 
@@ -45,7 +37,7 @@ export default function UserInfo({navigation, route}) {
     const id = route.params.id;
     const user = auth.currentUser;
 
-    const [rating, setRating] = useState('');
+    const [user_data, setUserData] = useState('');
     const [url, setUrl] = useState()
     const [updated, setUpdated] = useState(false)
     useEffect(async() => {
@@ -54,23 +46,26 @@ export default function UserInfo({navigation, route}) {
       }, []);
 
     useEffect(() => {
-        const getRating = async() =>{
-            const docRef = doc(db, "users", user.uid);
-            await getDoc(docRef).then(
-                (x) => {
-                    setRating(x)
-                }
-            )
+        const loadData = async() => {
+            const snap = await getDoc(doc(db, 'users', user.uid))
+            if (snap.exists()) {
+                setUserData(snap.data())
+            }
+            else {
+            alert("Internal Error")
+            }
         }
-        if (rating == '') { getRating()}
+        if (user_data ==''){
+            loadData()
+        }
     }, [])
 
     const handleSignOut = () => {
         auth
         .signOut()
-        .then((
-            navigation.navigate("Home")
-        ))
+        .then(() =>{
+            navigation.goBack()
+        })
         .catch(error => alert(error.message))
     };
 
@@ -116,7 +111,7 @@ export default function UserInfo({navigation, route}) {
         const file_name = user.uid;
 
         var reference = ref(storage, `gs://fit-user-app/profile_images/${file_name}`);
-        await uploadBytes(reference, blob).then(
+        await uploadBytesResumable(reference, blob).then(
             getProfileImage().then(
                 user.updateProfile({
                     photoURL:url,
@@ -124,7 +119,14 @@ export default function UserInfo({navigation, route}) {
             )
         ).catch((err) =>
             alert(err.message)
-        );
+        )
+        await getDownloadURL(reference).then((docURL) => {
+            db.collection('users').doc(user.uid).update({
+                photoURL: docURL,
+            })
+        }).catch((err) =>
+            alert(err.message)
+        )
 
         setUploading(false);
 
@@ -136,9 +138,9 @@ export default function UserInfo({navigation, route}) {
                 uploadFile={uploadFile} uploading={uploading}></UserImage>
             }
             <UserDetails displayName={user.displayName}></UserDetails>
-            <MyAccount rating={rating}></MyAccount>
+            <MyAccount user_data={user_data}></MyAccount>
             {user_settings.map((settings, index) => (
-                <TouchableOpacity key={index} style={{marginBottom:'1%'}}>
+                <TouchableOpacity key={index} style={{marginBottom:'1%'}} onPress={() => navigation.navigate(settings.navName)}>
                     <DisplaySettings name ={settings.name}></DisplaySettings>
                 </TouchableOpacity>
             ))}
@@ -184,7 +186,7 @@ const UserDetails = (props) => (
 
 const MyAccount = (props) => (
     <View style={user_css.review_container}>
-        <Rating type='custom' ratingCount={5} startingValue={props.rating} tintColor='#f2f2f2' readonly
+        <Rating type='custom' ratingCount={5} startingValue={props.user_data.rating} tintColor='#f2f2f2' readonly
                 style={{
                     marginTop:"5%",
                 }} imageSize={25}> </Rating>

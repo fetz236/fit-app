@@ -10,7 +10,7 @@ export default function FitnessDetail({route, navigation}) {
         <ScrollView style={{backgroundColor:'white'}}>
             <About route={route}/>
             <Divider width={1.8} style={{marginVertical:20}}/>
-            <CourseItems navigation={navigation} schedule_params = {route.params}></CourseItems>
+            <CourseItems navigation={navigation} route = {route}></CourseItems>
         </ScrollView>
     )
 }

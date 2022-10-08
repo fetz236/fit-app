@@ -22,7 +22,7 @@ export default function CheckoutPage({navigation}) {
 
     const handlePayPress = async() => {
         if(!cardDetails?.complete){
-            alert("Card Details are not complet")
+            alert("Card Details are not complete")
         }
     }
 
@@ -30,7 +30,7 @@ export default function CheckoutPage({navigation}) {
         <SafeAreaView>
             
             <Information time="12"/>
-            <Order/>
+            <Order navigation={navigation}/>
             <Payment confirmPayment={confirmPayment} changePayment={changePayment} setCardDetails={setCardDetails} 
             navigation={navigation}/>
             { 
@@ -46,7 +46,6 @@ export default function CheckoutPage({navigation}) {
 const Information = (props) => (
     <>
         <View style={checkout_style.header_container}>
-            <Text style={checkout_style.title}>Checkout</Text>
             <Text style={checkout_style.sub_heading}>Marylebone Square Gym</Text>
         </View>
         <Divider width={1} style={checkout_style.divider}/>
@@ -63,7 +62,7 @@ const Information = (props) => (
     </>
 )
     
-const Order = () => (
+const Order = (props) => (
     <View style ={checkout_style.perks_container}>
         <View>
             <Text style={checkout_style.perks_header}> Add Perks </Text>
@@ -78,7 +77,7 @@ const Order = () => (
         <View style={checkout_style.perks_info}>
             <Text style={checkout_style.perks_subheader}>fit- Perks</Text>
             
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => props.navigation.navigate('ViewPerks')}>
                 <Text style={checkout_style.perks_text}>Add a Perk</Text>
             </TouchableOpacity>
         </View>

@@ -3,10 +3,10 @@ import { ScrollView } from 'react-native'
 import { View, Text } from 'react-native'
 import SignUp from '../../components/authentication/SignUp'
 
-export default function SignUpScreen({navigation}) {
+export default function SignUpScreen({route, navigation}) {
     return (
         <ScrollView>
-            <SignUp navigation={navigation}/>
+            <SignUp route={route} navigation={navigation}/>
         </ScrollView>
     )
 }

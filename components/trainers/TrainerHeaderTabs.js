@@ -40,7 +40,7 @@ const HeaderButton = (props) => (
         }}
         onPress={() => 
             {
-                props.navigation.navigate(props.page);
+                props.navigation.goBack();
 
             }
         }

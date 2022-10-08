@@ -34,7 +34,7 @@ export const user_css = StyleSheet.create({
         borderColor: '#800020',
         overflow: "hidden",
         alignSelf: "center",       
-        marginTop: "20%", 
+        marginTop: "10%", 
     },
     user_rating:{
         alignContent:'space-around',

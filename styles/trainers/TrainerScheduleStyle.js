@@ -16,7 +16,6 @@ export const schedule_style_sheet = StyleSheet.create({
         alignItems:'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        marginTop: 10,
         backgroundColor: '#800020',
     },
     course_container:{

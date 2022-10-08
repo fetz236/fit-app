@@ -1,125 +1,126 @@
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native'
 import { View, Text } from 'react-native'
-import MultiSelect from 'react-native-multiple-select'
-import { signup_style } from '../../styles/authentication/SignUpStyle'
+import { Button, CheckBox, Divider } from 'react-native-elements'
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { modify_home_style } from '../../styles/upcoming/ModifyHomeStyle'
 
-const categories = [
-    {
-        id: 1,
-        name: "Rowing"
-    },
-    {
-        id: 2,
-        name: "Weights"
-    },
-    {
-        id: 3,
-        name: "Bowling"
-    },
-    {
-        id: 4,
-        name: "Yoga"
-    },
-    {
-        id: 5,
-        name: "Cycling"
-    },
-    {
-        id: 6,
-        name: "Karate"
-    },
-];
+const fitness_center = {
+    name:'Gym Way Marble Arch',
+    class:'Spinning',
+    trainer:'Kate Wilson',
+    price: '$5.00'
+}
 
-export default function ModifyHome() {
-    const [selectedItems, setSelectedItems] = useState([]);
-
-    const onSelectedItemsChanged = (selected) => {
-        setSelectedItems(selected)
+export default function ModifyHome({navigation}) {
+    const [date, setDate] = useState(new Date());
+    const [accepted, setAccepted] = useState(false)
+    const handleModification = () => {
+        console.log("Modifyllleedd")
     };
 
+    console.log(accepted);
     return (
-        <SafeAreaView>
-            <Interests selectedItems={selectedItems} onSelectedItemsChanged={onSelectedItemsChanged}/>
-        </SafeAreaView>
+        <View>
+            <ModifyHeader/>
+            <Divider style={modify_home_style.divider}/>
+            <ModifyMain/>
+            <Divider style={modify_home_style.divider}/>
+            <ModifyDate date={date}/>
+            <AcceptTerms  setAccepted={setAccepted} accepted={accepted} fitness_center={fitness_center}/>
+            <Divider style={modify_home_style.divider}/>
+            <ConfirmModification navigation={navigation} handleModification={handleModification}/>
+        </View> 
     )
 }
 
 
-const Interests = (props) => (
-    <View style={signup_style.signup_container}>
-        <Text style={signup_style.sub_heading}> interests </Text>
-        <View style={signup_style.multi_input_container}>
-            <MultiSelect items ={categories}
-            uniqueKey='id'
-            onSelectedItemsChange={props.onSelectedItemsChanged}
-            selectedItems={props.selectedItems}
-            selectText='Pick categories'
-            searchInputPlaceholderText='Search Categories'
-            tagRemoveIconColor='#800020'
-            searchInputStyle={{
-                height:50,
-                width:'80%',
-                backgroundColor:'transparent',
-            }}
-            styleDropdownMenu={{
-                height:50,
-                backgroundColor:'transparent',
-                borderColor:'#800020',
-                borderRadius:20,
-                borderWidth:2,
+const ModifyHeader = () => (
+    <View style={modify_home_style.header_container}>
+        <Text style={modify_home_style.title}>Confirm Modification</Text>
+    </View>
+)
 
-            }}
-            styleDropdownMenuSubsection={{
-                backgroundColor:'transparent',
-                borderColor:'#800020',
-                marginLeft:'3%',
-                marginRight:'3%',
-                borderBottomColor:'transparent',
-
-            }}
-            styleIndicator={{
-                backgroundColor:'transparent',
-            }}
-            styleInputGroup={{
-                backgroundColor:'transparent',
-                borderColor:'#800020',
-                borderRadius:20,
-                borderWidth:2,
-            }}
-            styleItemsContainer={{
-                backgroundColor:'transparent',
-            }}
-            styleListContainer={{
-                backgroundColor:'transparent',
-            }}
-            styleMainWrapper={{
-                backgroundColor:'transparent',
-            }}
-            styleRowList={{
-                backgroundColor:'transparent',
-            }}
-            styleSelectorContainer={{
-                backgroundColor:'transparent',
-            }}
-            styleTextDropdown={{
-                backgroundColor:'transparent',
-
-            }}
-            styleTextDropdownSelected={{
-                backgroundColor:'transparent',
-            }}
-            tagBorderColor='#800020'
-            tagTextColor='#800020'
-            selectedItemIconColor='#800020'
-            selectedItemTextColor='#800020'
-            itemTextColor='#800020'
-            displayKey='name'
-            submitButtonColor='#800020'
-            submitButtonText='Submit'
-
-            removeSelected 
-            />
+const ModifyMain = () => (
+    <View>
+        <View style={modify_home_style.modify_container}>
+            <Text style={modify_home_style.modify_header}> You are able to modify your booking</Text>
+        </View>
+        <View style={modify_home_style.modify_info}>
+            <Text style={modify_home_style.modify_text}>You may be charged a fee for modifying the booking</Text>
         </View>
     </View>
+)
+
+const ModifyDate = (props) => (
+    <View style={modify_home_style.confirm_modification}>
+        <View style={modify_home_style.confirm_container}>
+            <Text style={modify_home_style.title}>Select a new date and time for your trainer</Text>
+        </View>
+        <View style={modify_home_style.all_buttons}>
+            <DateTimePicker
+                  testID="dateTimePicker"
+                  value={props.date}
+                  mode='date'
+                  is24Hour={true}
+                  display="default"
+                  style={modify_home_style.date_time_style}
+                />       
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={props.date}
+                  mode='time'
+                  is24Hour={true}
+                  display="default"
+                  style={modify_home_style.time_style}
+                />    
+        </View>
+    </View>
+)
+
+const AcceptTerms = (props) => (
+    <View style={modify_home_style.accept_terms}>
+        <View style={modify_home_style.confirm_container}>
+            <Text style={modify_home_style.sub_heading}>You will be charged a fee of {props.fitness_center.price} at {props.fitness_center.name} completing 
+            the {props.fitness_center.class} class with trainer {props.fitness_center.trainer}
+            </Text>
+        <CheckBox 
+            style={{
+                color:'#800020', 
+            }}
+            checkedColor={{
+                color:'#800020',
+
+            }}
+            containerStyle={{backgroundColor:'transparent',
+            borderWidth:0,
+            color:'#800020'}}
+            textStyle={{color:'#800020'}}
+            title={"Accept Terms"}
+            checked={props.accepted}
+            onPress={()=> props.setAccepted(!props.accepted)}>
+        </CheckBox>
+        </View>
+
+    </View>
+)
+const ConfirmModification = (props) => (
+    <View style={modify_home_style.confirm_modification}>
+        <View style={modify_home_style.confirm_container}>
+            <Text style={modify_home_style.title}>Confirm Modification</Text>
+        </View>
+        <View style={modify_home_style.all_buttons}>
+            
+            <TouchableOpacity style={modify_home_style.button_container}
+                onPress={props.handleModification}>
+                <Text style={modify_home_style.button_text}>Go Back</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={modify_home_style.button_container}
+                onPress={props.handleModification}>
+                <Text style={modify_home_style.button_text}>Confirm</Text>
+            </TouchableOpacity>
+        </View>
+    </View>
+
+    
 )

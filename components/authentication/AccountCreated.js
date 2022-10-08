@@ -5,7 +5,7 @@ import { View, Text } from 'react-native'
 import { ac_style } from '../../styles/authentication/AccountCreatedStyle'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function AccountCreated({navigation}, ...props) {
+export default function AccountCreated({navigation, ...props}) {
     return (
     <>
         <Icon name="close" color='#800020' size={50} style={ac_style.close_button} 

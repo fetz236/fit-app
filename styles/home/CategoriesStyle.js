@@ -20,5 +20,21 @@ export const categories_css = StyleSheet.create({
         color:'#800020',
         fontWeight:"600"
     },
+    reload:{
+        alignItems:'center',
+    },
+    reload_button:{
+        backgroundColor:'#800020',
+        borderRadius:50,
+    },
+    white_subheading:{
+        color:'white',
+        fontSize:16,
+        fontWeight:'600',
+        marginLeft:'3%',
+        marginRight:'3%',
+        marginTop:'1.5%',
+        marginBottom:'1.5%',
+    },
 });
 

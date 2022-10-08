@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { TextInput } from 'react-native'
@@ -6,8 +6,23 @@ import { View, Text } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { fp_style } from '../../styles/authentication/ForgotPassword'
 import Icon from 'react-native-vector-icons/Ionicons';
+import { auth, db, storage } from '../../firebase'
 
-export default function ForgotPassword({navigation}) {
+export default function ForgotPassword({navigation, ...props}) {
+    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const handleForgotPass = async() => {
+        setLoading(true);
+        auth.sendPasswordResetEmail(email).then(() => {
+            alert("Email has been sent")
+          })
+          .catch((error) => {
+            alert(error)
+          });
+        
+        setLoading(false);
+    }
     return (
         <SafeAreaView>
             <Icon name="close" color='#800020' size={50} style={fp_style.close_button} 
@@ -24,6 +39,7 @@ export default function ForgotPassword({navigation}) {
                     autoCapitalize='none'
                     textContentType='emailAddress'
                     autoComplete='email'
+                    onChangeText={text => setEmail(text)}
                     style={fp_style.ti_container}
                     underlineColorAndroid='transparent'></TextInput>
                 </View>
@@ -31,6 +47,12 @@ export default function ForgotPassword({navigation}) {
             <View style={fp_style.forgot_container}>
                 <TouchableOpacity onPress={() => navigation.replace("LoginScreen")}>
                     <Text style={fp_style.sub_heading}> actually i remembered my password </Text>
+                </TouchableOpacity>
+            </View>
+            <View style={fp_style.forgot_container_box}>
+                <TouchableOpacity style={fp_style.touchable_opacity} 
+                    onPress={() => handleForgotPass()}>
+                    <Text style={fp_style.sub_heading_white}> send reset email </Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

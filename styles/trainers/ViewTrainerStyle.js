@@ -72,7 +72,7 @@ export const trainer_style = StyleSheet.create({
         borderColor: '#800020',
         overflow: "hidden",
         alignSelf: "center",       
-        marginTop: "15%", 
+        marginTop: "10%", 
     },
     
     trainer_rating:{

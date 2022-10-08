@@ -10,42 +10,19 @@ import { auth, db, storage } from '../../firebase'
 import {doc, setDoc} from 'firebase/firestore'
 import { getDownloadURL, ref } from "firebase/storage";
 import MultiSelect from 'react-native-multiple-select'
-import {CountryPicker} from "react-native-country-codes-picker";
+import PhoneInput from "react-native-phone-number-input";
 
-const categories = [
-    {
-        id: 1,
-        name: "Rowing"
-    },
-    {
-        id: 2,
-        name: "Weights"
-    },
-    {
-        id: 3,
-        name: "Bowling"
-    },
-    {
-        id: 4,
-        name: "Yoga"
-    },
-    {
-        id: 5,
-        name: "Cycling"
-    },
-    {
-        id: 6,
-        name: "Karate"
-    },
-];
+const categories = require('../../categories.json');
 
 
-export default function SignUp({navigation}) {
+export default function SignUp({navigation, ...props}) {
 
     const [f_name, setF_name] = useState('');
     const [l_name, setL_name] = useState('');
     const [email, setEmailState] = useState('');
     const [mobile, setMobile] = useState('');
+    const [mobileCountry, setMobileCountry] = useState('44');
+
     const [passwordState, setPasswordState] = useState('');
 
     const [url, setUrl] = useState('')
@@ -72,21 +49,35 @@ export default function SignUp({navigation}) {
             //user.sendEmailVerification();
             setDoc(doc(db, "users", id), {
                 rating: 5,
+                reviews:1,
+                isTrainer: true,
+                categories: selectedItems,
+                first_name: checkFName(f_name),
+                last_name: checkLName(l_name),
+                mobile: mobileCountry+mobile,
+                photoURL: "https://firebasestorage.googleapis.com/v0/b/fit-user-app/o/profile_images%2Fuser.png?alt=media&token=6a36bfe8-9305-450e-926d-a39d31195be7"
             });
             user.updateProfile({
                 displayName: checkFName(f_name) + " " + checkLName(l_name),
                 photoURL: url,
             }).then(function() {
                 // Profile updated successfully!
-                navigation.replace("UserDetail", {
-                    navigation: navigation,
-                })  
+                if(props.route.params.isCheckout){
+                    navigation.replace("Checkout", {
+                        navigation:navigation,
+                    });
+                }
+                else{
+                    navigation.replace("UserDetail", {
+                        navigation:navigation,
+                    });
+                }
                  
                 
               }, function(error) {
                 alert(error.message);
             });
-            
+                
         })
         .catch(error => {
             const errorCode = error.code;
@@ -106,24 +97,9 @@ export default function SignUp({navigation}) {
     };
 
 
-    const [show, setShow] = useState(false);
-    const [countryCode, setCountryCode] = useState('');
-
-    const checkMobile = (number) => {
-        const regex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
-
-        if (regex.test(number)) {
-            console.log("phone number is valid");
-        } else {
-            console.log("phone number is invalid");
-        }
-    };
-
-
     const [selectedItems, setSelectedItems] = useState([]);
 
     const onSelectedItemsChanged = (selected) => {
-        console.log(selected)
         setSelectedItems(selected)
     };
 
@@ -138,7 +114,7 @@ export default function SignUp({navigation}) {
             <Divider style={signup_style.divider}/>
             <FirstName setF_name={setF_name}/>
             <LastName setL_name={setL_name}/>
-            <Mobile setMobile={setMobile} setShow={setShow} countryCode={countryCode} setCountryCode={setCountryCode}/>
+            <Mobile setMobile={setMobile} setMobileCountry={setMobileCountry}/>
             <Email setEmailState = {setEmailState}/>
             <Password setPasswordState = {setPasswordState}/>
             <Interests selectedItems={selectedItems} onSelectedItemsChanged={onSelectedItemsChanged}/>
@@ -207,17 +183,22 @@ const Mobile = (props) =>(
     <View style={signup_style.signup_container}>
         <Text style={signup_style.sub_heading}> mobile </Text>
         <View>  
-            <CountryPicker/>
             <View style={signup_style.input_container}>
-                <TextInput autoCorrect={false}
-                autoCapitalize='none'
-                textContentType='telephoneNumber'
-                autoComplete='tel'
-                keyboardType='number-pad'
-                onChangeText={text => 
-                    props.setMobile(text)}
-                style={signup_style.ti_container}
-                underlineColorAndroid='transparent'></TextInput>
+                <PhoneInput 
+                defaultCode='GB'
+                onChangeCountry={text => props.setMobileCountry(text.callingCode)}
+                onChangeText={text => props.setMobile(text)}
+                containerStyle={{
+                    backgroundColor:'transparent',
+                }}
+                codeTextStyle={{
+                    backgroundColor:'transparent',
+                }}
+                textContainerStyle={{
+                    backgroundColor:'transparent',
+                }}
+                />
+
             </View>
         </View>
     </View>

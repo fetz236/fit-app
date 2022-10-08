@@ -121,7 +121,7 @@ const UpcomingButtons = (props) => (
 
 const UpcomingNavigationButtons = (props) => (
     <TouchableOpacity style={upcoming_style_sheet.btn_container} onPress= {
-        () => props.navigation.navigate("Checkout")
+        () => props.navigation.navigate("ViewPerks")
     } >
         <View>
             <Text style={upcoming_style_sheet.btn_text}> {props.name} </Text>

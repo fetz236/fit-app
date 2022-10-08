@@ -21,6 +21,7 @@ export default function GeneralInfo({ navigation, ...props }) {
         } else {
             navigation.navigate("AuthenticationScreen", {
                 navigation:navigation,
+                isCheckout: false
             })
         }
         

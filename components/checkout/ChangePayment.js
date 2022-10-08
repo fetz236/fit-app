@@ -39,7 +39,6 @@ export default function ChangePayment() {
 
     const [today, setToday] = useState(new Date());
     const [addNew, setAddNew] = useState(false)
-    console.log(today)
 
     const saveData = () => {
         console.log("Save Data")  
@@ -47,11 +46,6 @@ export default function ChangePayment() {
     return (
         <ScrollView>
             <SafeAreaView>
-
-                <View style={change_payment_css.header_container}>
-                    <Text style={change_payment_css.title}>Change Payment</Text>
-                </View>
-                <Divider style={change_payment_css.divider}/>
                 <View>
                     <View style={change_payment_css.existing_container}>
                         <View style ={change_payment_css.existing_header}>

@@ -7,6 +7,25 @@ export const about_sheet = StyleSheet.create({
         padding:15,
         backgroundColor: "white"
     },
+    about_category:{
+        flexDirection:'row',
+        marginTop:'3%',
+        marginLeft:'3%',
+        width:'47%',
+    },
+    opening_hours:{
+        flexDirection:'column',
+        marginTop:'3%',
+        marginLeft:'2%',
+        width:'47%',
+    },
+    wo_item:{
+        padding:'0.5%',
+        
+    },
+    wo_text:{
+        color:'#8d8d8d',
+    },
     about_img:{
         width:"92%",
         height:180,  

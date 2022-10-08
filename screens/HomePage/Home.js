@@ -1,18 +1,14 @@
 import React, { useState } from 'react'
 import { View, Text, SafeAreaView, ScrollView } from 'react-native'
 import { Divider } from 'react-native-elements/dist/divider/Divider'
-import Categories from '../../components/home/Categories'
-import FitnessItems,{
-    fitness,
-} from '../../components/home/FitnessItems'
 import GeneralInfo from '../../components/home/GeneralInfo'
 import HeaderTabs from '../../components/home/HeaderTabs'
+import MainSection from '../../components/home/MainSection'
 import SearchBar from '../../components/home/SearchBar'
 
 
 export default function Home({ navigation }) {
     const [city, setCity] = useState("London");
-    const [fitness_data, set_fitness_data]= React.useState(fitness)
 
     const google_fitness_data = () => {
         var axios = require('axios');
@@ -45,11 +41,7 @@ export default function Home({ navigation }) {
                     <SearchBar />
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Categories />  
-                    <FitnessItems 
-                        fitness_data={fitness_data}
-                        navigation ={navigation}
-                    />
+                    <MainSection navigation={navigation}/>
                 </ScrollView>
                 
             </SafeAreaView>
