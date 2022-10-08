@@ -5,7 +5,6 @@ import 'firebase/compat/firestore';
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDu52Y9UalTjclhBRPZRPm4EUwb5ckpXCQ",
   authDomain: "fit-user-app.firebaseapp.com",
   projectId: "fit-user-app",
   storageBucket: "fit-user-app",
